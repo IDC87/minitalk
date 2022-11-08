@@ -6,14 +6,36 @@
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 19:45:06 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/05 20:41:00 by ivda-cru         ###   ########.fr       */
+/*   Updated: 2022/11/08 20:20:39 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int main (int argc, char ** argv)
+#include  <stdio.h>
+#include  <sys/types.h>
+#include  <signal.h>
+#include  <sys/ipc.h>
+#include  <sys/shm.h>
+
+void signal_handler(int signum)
 {
+         
     
-    return (0);
+}
+
+
+int main(void)
+{
+    int pid;
+    //struct sigaction test;
+
+    pid = getpid();
+    printf("%d\n", pid );
+    signal(SIGUSR1, &signal_handler);  
+
+    while(1)
+        pause();
+    
+   return (0);
 }
