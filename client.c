@@ -6,7 +6,7 @@
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 19:44:58 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/08 19:54:14 by ivda-cru         ###   ########.fr       */
+/*   Updated: 2022/11/11 23:02:55 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ void send_bit(char c, int pid)
     int i = 0;
     while(i < 8)
     {
-        if((c >> i) & 1)
+        if((c >> i++) & 1)
             kill(pid, SIGUSR1);
         else
-            kill(pid, SIGUSR2);
-        i++;        
+            kill(pid, SIGUSR2); 
+            usleep(1000);  
+            
     }
+    
     
 }
 
@@ -39,20 +41,25 @@ int main (int argc, char **argv)
     int i;
 
     //i = 01101001
-
+    i = 0;
+    
     pid = atoi(argv[1]);    
     str = argv[2];
 
     printf("ARGS \n%d\n%s\n", pid, str);
 
-    send_bit(str[0], pid);
+    //send_bit(str[0], pid);
     
-    /* while(str[i])
+    while(str[i])
     {
         send_bit(str[i], pid);
         i++;
-    } */
+        //usleep(300);
+    }
 
+    /* while(1)
+        pause();
+ */
 
     
 }

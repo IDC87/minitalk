@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 19:45:06 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/11 23:06:11 by ivda-cru         ###   ########.fr       */
+/*   Created: 2022/11/11 21:00:29 by ivda-cru          #+#    #+#             */
+/*   Updated: 2022/11/11 21:01:06 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,16 @@ static void signal_handler(int signum)
     if (i < 8)
     {
         c = ((signum == SIGUSR1) << i) | c;
-        
         i++;       
         
     }
-    
     if (i == 8)
     {
         write(1, &c, 1);
         i = 0; 
         c = 0;
         
-    } 
-      
+    }   
     
 }
 
@@ -50,7 +47,7 @@ int main(void)
 
     pid = getpid();
     printf("%d\n", pid );
-    signal(SIGUSR1, &signal_handler);
+    signal(SIGUSR1, &signal_handler); 
     usleep(500); 
     signal(SIGUSR2, &signal_handler);
 
