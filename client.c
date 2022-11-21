@@ -6,14 +6,18 @@
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 19:44:58 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/21 12:11:51 by ivda-cru         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:47:14 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <string.h> // replace for the ft_atoi
 
-//ksjfsdljfldksjflsf
+void error(char *message)
+{
+    ft_putstr_fd("Error!", STDOUT_FILENO);
+    ft_putendl_fd(message, STDOUT_FILENO);
+    exit(0);
+}
 
 static void send_bit(char c, int pid)
 {
@@ -26,8 +30,7 @@ static void send_bit(char c, int pid)
             kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2); 
-           usleep(400); 
-     
+        usleep(400);     
         i++;    
     }     
 }
@@ -43,41 +46,46 @@ static void send_string(char *str, int pid)
         i++;
     }
     if (str[i] == '\0')
-        send_bit(str[i], pid);
-    
+        send_bit(str[i], pid);    
 }
 
 static void bit_confirmation(int signum)
-{   
-    if (signum == SIGUSR1)
-       // printf("BASED\n");  
-    while(signum != SIGUSR1) 
-        pause();   
-        
-}
-
-static void bit_confirmation_error(int signum)
-{     
+{
+    static int beeps_count;
     
-    if (signum == SIGUSR2)
-        {
-            printf("\n\nNao aguentou a pujanca\n\n");
-            exit(0);
-        }
+    if (signum == SIGUSR1)
+         beeps_count++;
+    if(signum == SIGUSR2)
+    {  
+        beeps_count = (beeps_count + 1) / 8; 
+        ft_putchar('\n'); 
+        ft_putnbr_fd(beeps_count, STDOUT_FILENO);
+        ft_putendl_fd(" Bytes received with sucess!", STDOUT_FILENO);  
+        ft_putchar('\n');
+        exit(0);
+    }         
 }
 
 int main (int argc, char **argv)
 {
     int pid;
     char *str;
-    
-    pid = atoi(argv[1]);    
-    str = strdup(argv[2]);   
+    if (argc != 3)
+        error("invalid arguments! Ending Client");    
+    pid = ft_atoi(argv[1]);    
+    str = ft_strdup(argv[2]);
+        if(!str || ft_strlen(str) == 0)
+        {
+            free(str);
+            error(" Empty string");   
+        }
     signal(SIGUSR1, &bit_confirmation);
-	signal(SIGUSR2, &bit_confirmation_error);
-
-    send_string(str, pid);
+	signal(SIGUSR2, &bit_confirmation);
+    send_string(str, pid);      
     free(str);
+
+    while(1)
+        pause;
     return (0);   
 
 

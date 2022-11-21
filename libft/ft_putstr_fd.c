@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 20:15:46 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/21 13:41:26 by ivda-cru         ###   ########.fr       */
+/*   Created: 2021/12/04 19:42:08 by ivda-cru          #+#    #+#             */
+/*   Updated: 2021/12/08 16:50:14 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include "./libft/libft.h"
-#include <unistd.h>
-#include <signal.h>
-#include <stdlib.h>
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
 
-
-
-#endif
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i] != '\0')
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
+}

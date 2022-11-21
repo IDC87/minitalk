@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 20:15:46 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/21 13:41:26 by ivda-cru         ###   ########.fr       */
+/*   Created: 2021/12/04 19:53:03 by ivda-cru          #+#    #+#             */
+/*   Updated: 2021/12/08 16:45:39 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# include "./libft/libft.h"
-#include <unistd.h>
-#include <signal.h>
-#include <stdlib.h>
+void	ft_putendl_fd(char *s, int fd)
+{
+	int	i;
 
-
-
-#endif
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i] != '\0')
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
+	write(fd, "\n", 1);
+}
