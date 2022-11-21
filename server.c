@@ -6,89 +6,110 @@
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 19:45:06 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/20 20:54:30 by ivda-cru         ###   ########.fr       */
+/*   Updated: 2022/11/21 12:08:35 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 //#define _GNU_SOURCE
+#include <string.h>
 
 //c = ((signum == SIGUSR1) << i) | c; 
 /* #include  <stdio.h>
 #include  <sys/types.h>
 #include  <signal.h> */
 
-//https://github.com/pvaladares/42cursus-02-minitalk/blob/main/src/server.c
-
-/* int lenght_of_str(char c)
+void	ft_putendl(char *s)
 {
-    int i;
-    int atoi_len;
-    int x;
+	int	i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i] != '\0')
+	{
+		write(1, &s[i], 1);
+		i++;
+	}
+	write(1, "\n", 1);
+}
+
+
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+
+static char *print_string(char c, char *client_str)
+{
+    char *new_string; 
+    size_t str_len;
     
-    
-    i = 0;    
-    while (c != '\t')
+    // string = "mensagem que vem do cliente"
+    new_string = NULL;
+    str_len = 0;
+    if(client_str)
+        str_len = strlen(client_str);
+
+    new_string = (char *)malloc(sizeof(char) * (str_len + 1 + 1));  
+          
+    if(new_string)
     {
-        atoi_len = atoi(c);
+        new_string = strncpy(new_string, client_str, str_len);
+        new_string[str_len] = c;
+        new_string[str_len + 1] = '\0';
+        
     }
-    shift
-    X |= 1 << (((sizeof(int) * 8) - 1) - Y);
-    x = x | 1 << (shift - Y);
-    x = 1 << (shift - Y) | x;
-} */
+    if(client_str)
+        free(client_str);
+
+    return (new_string);
+    
+    
+}
+
 
 static void signal_handler(int signum, siginfo_t *pid, void *palha)
 {
     static int i ;
     static unsigned char c;  
-    static pid_t			client_pid;
-    static int str_len;  
-    static int y;
+    static pid_t			client_pid;  
+    static char     *client_str;
 
    
         (void)palha;
-        client_pid = pid->si_pid;
-        //lenght_of_str(c);
-
-        if (y <= 32)
+        client_pid = pid->si_pid;    
+        if (signum == SIGUSR1)
         {
-            if (signum == SIGUSR1)
-                str_len = 1 << ((sizeof(int) * 8) - y) | str_len;
-            else
-                 str_len = 0 << ((sizeof(int) * 8) - y) | str_len;   
-            y++;        
+            c = 1 << i | c;
+            i++;
         }
-        
-
-        if (y == 31)
-            write(1, &str_len, sizeof(str_len));
-        
-
-        if(y > 32)
+        else if (signum == SIGUSR2)
         {
-            if (signum == SIGUSR1)
-            {
-                c = 1 << i | c;
-                i++;
-            }
-            else if (signum == SIGUSR2)
-            {
-                c = 0 << i | c;
-                i++;            
-            }             
-        }        
+            c = 0 << i | c;
+            i++;            
+        }  
+        
     
     if (i == 8)
-    {   
-        if (!c)
+    { 
+        if (c)
+            client_str = print_string(c, client_str); 
+        else if(client_str)
+            ft_putendl(client_str);
+            
+         
+        /* if (!c)
         {
             kill(client_pid, SIGUSR2); 
             printf("\n\nerror comes from here!\n\n");    
             exit(0);
-        }  
+        }   */
+
         
-        write(1, &c, 1);
+        
+          // write(1, &c, 1);
         i = 0; 
         c = 0;         
             

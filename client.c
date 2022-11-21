@@ -6,7 +6,7 @@
 /*   By: ivda-cru <ivda-cru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 19:44:58 by ivda-cru          #+#    #+#             */
-/*   Updated: 2022/11/20 20:50:45 by ivda-cru         ###   ########.fr       */
+/*   Updated: 2022/11/21 09:31:38 by ivda-cru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void send_bit(char c, int pid)
             kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2); 
-           usleep(400); 
+           usleep(200); 
      
         i++;    
     }     
@@ -93,6 +93,7 @@ static void send_str_len(char *str, int pid)
 		    kill(pid, SIGUSR1);
         else
             kill(pid, SIGUSR2);
+        usleep(200);
 		shift--;
 	}
     
