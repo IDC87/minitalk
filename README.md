@@ -11,4 +11,8 @@ We can only use two signals from the library, SIGUSR1 and SIGUSR2 with the help 
 Data needs to be translated in binary with the help of the bitwise operations in c.
 In the other end, server side, binary data needs to be converted again in order to be displayed in the standart output.
 
+<tt>125% completed (main and bonus)</tt>
 
+<tt>acknowledge response from client and return confirmation of all bytes read!</tt>
+<tt>Unicode support!</tt>
+<tt>Works with 100kb strings size</tt>
